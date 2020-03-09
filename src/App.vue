@@ -1,24 +1,28 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div class="box">我是一段测试less语法的文字</div>
-    <el-button type="primary">按钮</el-button>
+    <home-page />
     <router-view/>
   </div>
 </template>
 
 <script>
+import HomePage from './pages/HomePage'
+
 export default {
-  name: 'App'
+  components: {
+    HomePage
+  }
 }
 </script>
 
 <style lang="less">
+html,body{
+  margin: 0;
+  padding: 0;
+  background-color: #f2f3f7;
+}
 #app {
-  .box{
-    color: green;
-    font-size: 30px;
-    font-weight: blod;
-  }
+  width: 100%;
+  height: 100%;
 }
 </style>
