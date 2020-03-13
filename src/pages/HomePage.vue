@@ -9,6 +9,7 @@
         <about-content />
         <new-content />
         <footer-bar />
+        <float-page />
     </div>
 </template>
 <script>
@@ -20,6 +21,7 @@ import HomeService from '../components/HomeService'
 import AboutContent from '../components/AboutContent'
 import NewContent from '../components/NewContent'
 import FooterBar from '../components/FooterBar'
+import FloatPage from '../components/FloatPage'
 export default {
   components: {
     HeaderBar,
@@ -29,7 +31,8 @@ export default {
     HomeService,
     AboutContent,
     NewContent,
-    FooterBar
+    FooterBar,
+    FloatPage
   }
 }
 </script>
@@ -37,5 +40,7 @@ export default {
     .home_page{
         width: 100%;
         background-color: #f2f3f7;
+        position: relative;
+        transition: all 0.5s;
     }
 </style>

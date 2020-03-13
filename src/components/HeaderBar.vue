@@ -28,95 +28,167 @@
                 <input type="text" :placeholder="inputText">
                 <div class="input-btn"><i class="el-icon-search"></i></div>
                 <div class="text">
-                    高级
-                    <br>
                     搜索
                 </div>
             </div>
-            <div class="login">
-                <button><i class="el-icon-user-solid"></i> 登录</button>
-                <button><i class="el-icon-user"></i> 注册</button>
+            <div class="login" v-if="isLogin">
+                <button><i class="el-icon-user-solid"></i>
+                    <router-link :to="{path: '/login'}">登录</router-link>
+                </button>
+                <button><i class="el-icon-user"></i>
+                    <router-link :to="{path: '/register'}">注册</router-link>
+                </button>
+            </div>
+            <div class="loging" v-else>
+                <div>已登陆：{{this.email}}</div>
+                <div class="signOut" @click="signOut">退出登陆</div>
             </div>
         </div>
         <div class="header_bar_menu">
-            <a v-for="(item, index) in menuList" :key="index">{{item}}</a>
+            <span @click="changeIndex(1)">
+                 <router-link :class="{active: activeIndex === 1}" :to="{path: '/index/trademap'}">贸易地图</router-link>
+            </span>
+           <span @click="changeIndex(2)">
+               <router-link :class="{active: activeIndex === 2}" :to="{path: '/index/searchemail'}">AI搜邮</router-link>
+           </span>
+           <span @click="changeIndex(3)">
+               <router-link :class="{active: activeIndex === 3}" :to="{path: '/index/pricingplan'}">方案价格</router-link>
+           </span>
+           <span @click="changeIndex(4)">
+               <router-link :class="{active: activeIndex === 4}" :to="{path: '/index/customsdata/jin'}">海关数据</router-link>
+           </span>
+           <span @click="changeIndex(5)">
+               <router-link :class="{active: activeIndex === 5}" :to="{path: '/index/customercase'}">客户案例</router-link>
+           </span >
+           <span @click="changeIndex(6)">
+               <router-link :class="{active: activeIndex === 6}" :to="{path: '/index/hscode'}">海关编码</router-link>
+           </span>
+           <span @click="changeIndex(7)">
+               <router-link :class="{active: activeIndex === 7}" :to="{path: '/index/hstool'}">外贸工具</router-link>
+           </span>
+           <span @click="changeIndex(8)">
+               <router-link  :class="{active: activeIndex === 8}" :to="{path: '/index/tradeskills'}">外贸技巧</router-link>
+           </span>
         </div>
     </div>
 </template>
 <script>
 export default {
-    data(){
-        return {
-            input1: '',
-            // 搜索下拉1数据
-            select1: '找采购商',
-            // 搜索下拉2数据
-            select2: '产品名称',
-            // 控制菜单一的显示
-            s1show: true,
-            // 控制菜单二的显示
-            s2show: true,
-            // 控制选项二的显示
-            isShow: true,
-            // 菜单一的数据
-            menu1: ['找采购商', '找供应商', '贸易地图'],
-            //菜单二的数据
-            menu2:['产品名称', '公司名称', '海关编码'],
-            // 下拉1选项激活显示
-            current1: 0,
-            // 下拉2选项激活显示
-            current2: 0,
-            // 输入框显示内容
-            inputTextNum: 1,
-            // 菜单列表数据
-            menuList: []
-        }
-    },
-    mounted(){
-        this.$axios.get('homePage').then((res)=> {
-            console.log(res.data.menuList)
-            this.menuList = res.data.menuList
-        })
-    },
-    computed: {
-        inputText(){
-            if(this.inputTextNum == 1) return '输入英语/俄语/西班牙语'
-            else if(this.inputTextNum == 2) return '输入4-10位HS编码'
-            else if(this.inputTextNum == 3) return '请输入6位HS商品编码'
-        }
-    },
-    methods: {
-        // 切换菜单事件
-        changeMenu1(item, index){
-            if(index == 2) {
-                this.isShow = false
-                // 选项三改变输入框提示内容
-                this.inputTextNum = 3
-            }else{
-                this.isShow = true
-                this.inputTextNum = 1
-            }
-            this.select1 = item
-            this.current1 = index
-            // 点击结束后隐藏菜单
-            this.s1show = false
-            // 隐藏菜单后，重置菜单
-            setTimeout(()=>{this.s1show = true},50)
-        },
-        changeMenu2(item, index){
-            if(index == 2) {
-                this.inputTextNum = 2
-            }else {
-                this.inputTextNum = 1
-            }
-            this.select2 = item
-            this.current2 = index
-            // 点击结束后隐藏菜单
-            this.s2show = false
-            // 隐藏菜单后，重置菜单
-            setTimeout(()=> {this.s2show = true},50)
-        }
+  data () {
+    return {
+      input1: '',
+      // 搜索下拉1数据
+      select1: '找采购商',
+      // 搜索下拉2数据
+      select2: '产品名称',
+      // 控制菜单一的显示
+      s1show: true,
+      // 控制菜单二的显示
+      s2show: true,
+      // 控制选项二的显示
+      isShow: true,
+      // 菜单一的数据
+      menu1: ['找采购商', '找供应商', '贸易地图'],
+      // 菜单二的数据
+      menu2: ['产品名称', '公司名称', '海关编码'],
+      // 下拉1选项激活显示
+      current1: 0,
+      // 下拉2选项激活显示
+      current2: 0,
+      // 输入框显示内容
+      inputTextNum: 1,
+      // 菜单列表数据
+      menuList: [],
+      // active激活
+      activeIndex: 0,
+      // 登陆email
+      email: null
     }
+  },
+  mounted () {
+    // 获取登陆email
+    this.email = window.localStorage.getItem('email')
+    this.$axios.get('homePage').then((res) => {
+      console.log(res.data.menuList)
+      this.menuList = res.data.menuList
+    })
+    this.activeIndex = 0
+  },
+  computed: {
+    inputText () {
+      if (this.inputTextNum == 1) return '输入英语/俄语/西班牙语'
+      else if (this.inputTextNum == 2) return '输入4-10位HS编码'
+      else if (this.inputTextNum == 3) return '请输入6位HS商品编码'
+    },
+    isLogin () {
+      if (this.email !== null) {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
+  methods: {
+    // 切换菜单事件
+    changeMenu1 (item, index) {
+      if (index == 2) {
+        this.isShow = false
+        // 选项三改变输入框提示内容
+        this.inputTextNum = 3
+      } else {
+        this.isShow = true
+        this.inputTextNum = 1
+      }
+      this.select1 = item
+      this.current1 = index
+      // 点击结束后隐藏菜单
+      this.s1show = false
+      // 隐藏菜单后，重置菜单
+      setTimeout(() => { this.s1show = true }, 50)
+    },
+    changeMenu2 (item, index) {
+      if (index == 2) {
+        this.inputTextNum = 2
+      } else {
+        this.inputTextNum = 1
+      }
+      this.select2 = item
+      this.current2 = index
+      // 点击结束后隐藏菜单
+      this.s2show = false
+      // 隐藏菜单后，重置菜单
+      setTimeout(() => { this.s2show = true }, 50)
+    },
+    changeIndex (index) {
+      console.log(this.activeIndex)
+      this.activeIndex = index
+      console.log(this.activeIndex)
+    },
+    // 退出登陆状态
+    // signOut () {
+    //   window.localStorage.clear()
+    //   this.email = null
+    // },
+    signOut () {
+      this.$confirm('是否退出当前账号？', 'Warning', {
+        confirmButtonText: '是',
+        cancelButtonText: '否',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '成功退出！'
+        })
+        window.localStorage.clear()
+        this.email = null
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '您已取消！'
+        })
+      })
+    }
+  }
 }
 </script>
 <style lang="less">
@@ -145,7 +217,7 @@ export default {
                 display: flex;
                 width: 697px;
                 input{
-                width: 425px;   
+                width: 425px;
                 height: 50px;
                 text-indent: 10px;
                 color: #555;
@@ -185,6 +257,7 @@ export default {
                     color: #555;
                     font-size: 14px;
                     cursor: pointer;
+                    z-index: 9999;
                     box-sizing: border-box;
                     i{
                         font-size: 18px;
@@ -241,6 +314,10 @@ export default {
                 }
             }
             .login{
+                a{
+                    color:#fff;
+                    text-decoration: none;
+                }
                 button{
                     width: 128px;
                     height: 50px;
@@ -260,6 +337,22 @@ export default {
                     }
                 }
             }
+            .loging{
+                color: #ccc;
+                font-size: 12px;
+                .signOut{
+                    width: 100px;
+                    margin-top: 20px;
+                    cursor: pointer;
+                    border: 1px solid #ccc;
+                    text-align: center;
+                    border-radius: 10px;
+                    transition: color 0.3s;
+                }
+                .signOut:hover{
+                    color: red;
+                }
+            }
         }
         .header_bar_menu{
             color: #fff;
@@ -268,12 +361,18 @@ export default {
             min-width: 1220px;
             a{
                 margin-right: 60px;
+                // color: #fe9601;
+                color: #fff;
+                text-decoration: none;
                 cursor: pointer;
+            }
+            a.active{
+                color: #fe9601;
             }
             a:hover{
                 color: #fe9601;
             }
         }
-        
+
     }
 </style>
