@@ -65,7 +65,24 @@ export default new Router({
         {
           path: 'searchemail',
           name: 'searchemail',
-          component: () => import('../jumppage/SearchEmail.vue')
+          component: () => import('../jumppage/SearchEmail.vue'),
+          children: [
+            {
+              path: 'all',
+              name: 'all',
+              component: () => import('../jumppage/Searchmail/AllPage.vue')
+            },
+            {
+              path: 'commnoly',
+              name: 'commonly',
+              component: () => import('../jumppage/Searchmail/CommonlyPage.vue')
+            },
+            {
+              path: 'test',
+              name: 'test',
+              component: () => import('../jumppage/Searchmail/EmailTest.vue')
+            }
+          ]
         },
         {
           path: 'tradeskills',

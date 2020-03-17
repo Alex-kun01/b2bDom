@@ -49,7 +49,7 @@
                  <router-link :class="{active: activeIndex === 1}" :to="{path: '/index/trademap'}">贸易地图</router-link>
             </span>
            <span @click="changeIndex(2)">
-               <router-link :class="{active: activeIndex === 2}" :to="{path: '/index/searchemail'}">AI搜邮</router-link>
+               <router-link :class="{active: activeIndex === 2}" :to="{path: '/index/searchemail/all'}">AI搜邮</router-link>
            </span>
            <span @click="changeIndex(3)">
                <router-link :class="{active: activeIndex === 3}" :to="{path: '/index/pricingplan'}">方案价格</router-link>
